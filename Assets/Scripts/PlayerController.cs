@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     {
         _anim = GetComponent<Animator>();
         _playerRigidBody = GetComponent<Rigidbody2D>();
+
+        DontDestroyOnLoad(transform.gameObject);
 	}
 	
 	// Update is called once per frame
@@ -30,11 +32,7 @@ public class PlayerController : MonoBehaviour
         if (horizontalInput > 0.5 ||
             horizontalInput < -0.5)
         {
-            //transform.Translate(new Vector3(
-            //    horizontalInput * MoveSpeed * Time.deltaTime,
-            //    0));
-
-            _playerRigidBody.velocity = new Vector2(horizontalInput * MoveSpeed, _playerRigidBody.velocity.y);
+           _playerRigidBody.velocity = new Vector2(horizontalInput * MoveSpeed, _playerRigidBody.velocity.y);
 
             _playerIsMoving = true;
             _lastMovement = new Vector2(horizontalInput, 0);
@@ -47,10 +45,6 @@ public class PlayerController : MonoBehaviour
         if (verticalInput > 0.5 ||
             verticalInput < -0.5)
         {
-            //transform.Translate(new Vector3(
-            //    0,
-            //    verticalInput * MoveSpeed * Time.deltaTime));
-
             _playerRigidBody.velocity = new Vector2(_playerRigidBody.velocity.x, verticalInput * MoveSpeed);
 
             _playerIsMoving = true;
