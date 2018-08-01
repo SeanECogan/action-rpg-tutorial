@@ -5,12 +5,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float MoveSpeed;
+    public Vector2 LastMovement;
 
     private Animator _anim;
     private Rigidbody2D _playerRigidBody;
 
     private bool _playerIsMoving;
-    private Vector2 _lastMovement;
+
+    private static bool _playerExists;
 
 	// Use this for initialization
 	void Start ()
@@ -18,7 +20,15 @@ public class PlayerController : MonoBehaviour
         _anim = GetComponent<Animator>();
         _playerRigidBody = GetComponent<Rigidbody2D>();
 
-        DontDestroyOnLoad(transform.gameObject);
+        if (!_playerExists)
+        {
+            _playerExists = true;
+            DontDestroyOnLoad(transform.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 	}
 	
 	// Update is called once per frame
@@ -35,7 +45,7 @@ public class PlayerController : MonoBehaviour
            _playerRigidBody.velocity = new Vector2(horizontalInput * MoveSpeed, _playerRigidBody.velocity.y);
 
             _playerIsMoving = true;
-            _lastMovement = new Vector2(horizontalInput, 0);
+            LastMovement = new Vector2(horizontalInput, 0);
         }
         else
         {
@@ -48,7 +58,7 @@ public class PlayerController : MonoBehaviour
             _playerRigidBody.velocity = new Vector2(_playerRigidBody.velocity.x, verticalInput * MoveSpeed);
 
             _playerIsMoving = true;
-            _lastMovement = new Vector2(0, verticalInput);
+            LastMovement = new Vector2(0, verticalInput);
         }
         else
         {
@@ -58,7 +68,7 @@ public class PlayerController : MonoBehaviour
         _anim.SetFloat("MoveX", horizontalInput);
         _anim.SetFloat("MoveY", verticalInput);
         _anim.SetBool("PlayerIsMoving", _playerIsMoving);
-        _anim.SetFloat("LastMoveX", _lastMovement.x);
-        _anim.SetFloat("LastMoveY", _lastMovement.y);
+        _anim.SetFloat("LastMoveX", LastMovement.x);
+        _anim.SetFloat("LastMoveY", LastMovement.y);
     }
 }

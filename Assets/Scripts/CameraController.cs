@@ -9,9 +9,19 @@ public class CameraController : MonoBehaviour {
 
     private Vector3 _targetPosition;
 
+    private static bool _cameraExists;
+
 	// Use this for initialization
 	void Start () {
-        DontDestroyOnLoad(transform.gameObject);
+        if (!_cameraExists)
+        {
+            _cameraExists = true;
+            DontDestroyOnLoad(transform.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 	
 	// Update is called once per frame
